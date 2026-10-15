@@ -1,0 +1,22 @@
+{
+  "name": "accesos-internet-movil-ontic",
+  "label": "Accesos a Internet Móvil - ONTIC",
+  "type": "widget",
+  "version": "1.21.0",
+  "exbVersion": "1.21.0",
+  "author": "MinTIC - ONTIC",
+  "description": "Widget indicador de Accesos a Internet Móvil por tipo de tecnología (2G, 3G, 4G, 5G), proveedor y segmento con datos oficiales HECAA - MinTIC.",
+  "copyright": "MinTIC 2026",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "properties": {
+    "hasSetting": true
+  },
+  "translatedLocales": [
+    "en",
+    "es"
+  ],
+  "defaultSize": {
+    "width": 800,
+    "height": 580
+  }
+}

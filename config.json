@@ -1,0 +1,11 @@
+{
+  "serviceUrl": "https://arcgis.esri.co/server/rest/services/Hosted/Ontic/FeatureServer/0",
+  "widgetTitle": "Accesos a Internet móvil",
+  "widgetSubtitle": "Número de accesos móviles a Internet en millones, desagregado por tipo de tecnología",
+  "sourceText": "Registro Administrativo Reporte HECAA - MinTIC",
+  "defaultSegmento": "TODOS",
+  "defaultTerminal": "TODOS",
+  "defaultProveedor": "TODOS",
+  "chartType": "stacked",
+  "autoRefreshSec": 120
+}

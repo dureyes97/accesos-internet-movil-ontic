@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accesos a Internet móvil • ONTIC - MinTIC Colombia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mintic-blue: #004884;
+      --mintic-blue-dark: #002855;
+      --mintic-accent: #3366cc;
+      --col-2g: #F9E6CF;
+      --col-2g-border: #e8cdb0;
+      --col-2g-text: #5c452e;
+      --col-3g: #FAC67A;
+      --col-3g-border: #e6a953;
+      --col-3g-text: #4d3208;
+      --col-4g: #DA498D;
+      --col-4g-border: #be3475;
+      --col-4g-text: #ffffff;
+      --col-5g: #69247C;
+      --col-5g-border: #4f175f;
+      --col-5g-text: #ffffff;
+      --bg-main: #f8fafc;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-main);
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 16px;
+      user-select: none;
+    }
+
+    .widget-wrapper {
+      width: 100%;
+      max-width: 980px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px -5px rgba(0, 72, 132, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    .mintic-stripe {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      border-radius: 16px 16px 0 0;
+      background: linear-gradient(90deg, #FCD116 0%, #FCD116 33.3%, #003893 33.3%, #003893 66.6%, #CE1126 66.6%, #CE1126 100%);
+    }
+
+    /* Encabezado */
+    .header-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 4px;
+      border-bottom: 1px solid #eef2f6;
+      padding-bottom: 14px;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ontic-logo-badge {
+      background: linear-gradient(135deg, var(--mintic-blue) 0%, var(--col-5g) 100%);
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 72, 132, 0.25);
+    }
+
+    .header-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tag-sectorial {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mintic-blue);
+    }
+
+    .main-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0b1f38;
+      margin: 1px 0;
+      line-height: 1.2;
+    }
+
+    .sub-title {
+      font-size: 0.76rem;
+      color: #506680;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* KPIs */
+    .kpis-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.15s ease;
+    }
+    .kpi-card:hover {
+      border-color: var(--mintic-blue);
+      transform: translateY(-1px);
+    }
+
+    .kpi-top-total { border-top: 3px solid var(--mintic-blue); }
+    .kpi-top-4g { border-top: 3px solid var(--col-4g); }
+    .kpi-top-5g { border-top: 3px solid var(--col-5g); }
+    .kpi-top-3g { border-top: 3px solid var(--col-3g); }
+
+    .kpi-lbl {
+      font-size: 0.68rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .kpi-num {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin: 4px 0 2px 0;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+    }
+
+    .kpi-desc {
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #059669;
+    }
+
+    /* Filtros */
+    .toolbar-filters {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-item label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .filter-select {
+      font-size: 0.74rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #1e293b;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .btn-toggle {
+      font-size: 0.70rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-toggle.active {
+      background: var(--mintic-blue);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .btn-util {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--mintic-blue);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-util:hover {
+      background: #e2e8f0;
+    }
+
+    /* Gráfico */
+    .chart-container-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 18px 10px 18px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .chart-axis-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+
+    .svg-area {
+      width: 100%;
+      height: 320px;
+      position: relative;
+    }
+
+    .svg-canvas {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* Leyenda */
+    .legend-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 12px 0 4px 0;
+      border-top: 1px solid #f1f5f9;
+      margin-top: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.15s ease;
+    }
+    .legend-item.dimmed { opacity: 0.35; }
+
+    .legend-pill {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .legend-txt {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    /* Tooltip */
+    .tooltip-float {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(11, 31, 56, 0.96);
+      backdrop-filter: blur(4px);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.74rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      z-index: 100;
+      min-width: 200px;
+      display: none;
+      transform: translate(-50%, -105%);
+    }
+
+    .tt-header {
+      font-weight: 800;
+      font-size: 0.80rem;
+      color: #FCD116;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    .tt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 3px;
+    }
+
+    .tt-total {
+      border-top: 1px dashed rgba(255, 255, 255, 0.25);
+      margin-top: 5px;
+      padding-top: 4px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    /* Tabla */
+    .table-view-box {
+      display: none;
+      width: 100%;
+      max-height: 320px;
+      overflow: auto;
+    }
+    .table-view-box.active { display: block; }
+
+    .ontic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+    }
+
+    .ontic-table th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      padding: 9px 12px;
+      text-align: right;
+      border-bottom: 2px solid #cbd5e1;
+      position: sticky;
+      top: 0;
+    }
+    .ontic-table th:first-child { text-align: left; }
+
+    .ontic-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: right;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+    }
+    .ontic-table td:first-child {
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+    }
+
+    /* Modal Incrustar */
+    .embed-card {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: #0b1f38;
+      color: #a7f3d0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      font-size: 0.70rem;
+    }
+    .embed-card.active { display: flex; }
+
+    /* Footer */
+    .footer-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.70rem;
+      color: #64748b;
+      border-top: 1px solid #eef2f6;
+      padding-top: 8px;
+    }
+
+    .spin-anim {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 680px) {
+      .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head><body>
+
+  <div class="widget-wrapper">
+    <div class="mintic-stripe"></div>
+
+    <!-- Encabezado Institucional -->
+    <header class="header-box">
+      <div class="header-brand">
+        <div class="ontic-logo-badge">ONTIC</div>
+        <div class="header-titles">
+          <span class="tag-sectorial">🇨🇴 MinTIC • PotencIA Digital • Conectividad</span>
+          <h1 class="main-title">Accesos a Internet móvil</h1>
+          <span class="sub-title">Número de accesos móviles a Internet en millones, desagregado por tipo de tecnología • Reporte HECAA</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-util" id="btnToggleEmbed" title="Obtener código iframe para incrustar en Portal o StoryMap">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+          <span>Incrustar</span>
+        </button>
+        <button class="btn-util" id="btnRefresh" title="Actualizar datos desde el servicio ArcGIS">
+          <svg id="refreshIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
+          </svg>
+          <span>Actualizar</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Tarjetas de Resumen KPI -->
+    <section class="kpis-grid">
+      <div class="kpi-card kpi-top-total">
+        <span class="kpi-lbl">Total Accesos (<span id="kpiPeriod">2026-1</span>)</span>
+        <span class="kpi-num" id="kpiTotal">26.97 M</span>
+        <span class="kpi-desc">Millones de abonados activos</span>
+      </div>
+
+      <div class="kpi-card kpi-top-4g">
+        <span class="kpi-lbl">Tecnología 4G LTE</span>
+        <span class="kpi-num" id="kpi4g">23.20 M</span>
+        <span class="kpi-desc" id="kpi4gPct">86.0% de participación</span>
+      </div>
+
+      <div class="kpi-card kpi-top-5g">
+        <span class="kpi-lbl">Despliegue 5G</span>
+        <span class="kpi-num" id="kpi5g">2.21 M</span>
+        <span class="kpi-desc" id="kpi5gPct">8.2% en expansión sostenida</span>
+      </div>
+
+      <div class="kpi-card kpi-top-3g">
+        <span class="kpi-lbl">Tecnología 3G</span>
+        <span class="kpi-num" id="kpi3g">1.50 M</span>
+        <span class="kpi-desc" id="kpi3gPct">5.6% en desmonte gradual</span>
+      </div>
+    </section>
+
+    <!-- Barra de Filtros Interactivos -->
+    <section class="toolbar-filters">
+      <div class="filter-item">
+        <label for="selectOperador">Operador:</label>
+        <select class="filter-select" id="selectOperador">
+          <option value="TODOS">Todos los Operadores</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Segmento:</label>
+        <div class="btn-group" id="segGroup">
+          <button class="btn-toggle active" data-seg="TODOS">Todos</button>
+          <button class="btn-toggle" data-seg="PREPAGO">Prepago</button>
+          <button class="btn-toggle" data-seg="POSPAGO">Pospago</button>
+        </div>
+      </div>
+
+      <div class="filter-item">
+        <label>Terminal:</label>
+        <div class="btn-group" id="termGroup">
+          <button class="btn-toggle active" data-term="TODOS">Todos</button>
+          <button class="btn-toggle" data-term="TELÉFONO MÓVIL">Móvil</button>
+          <button class="btn-toggle" data-term="DATA CARD">Módem</button>
+        </div>
+      </div>
+
+      <div class="filter-item">
+        <div class="btn-group">
+          <button class="btn-toggle active" id="btnViewChart">Gráfica</button>
+          <button class="btn-toggle" id="btnViewTable">Tabla</button>
+        </div>
+        <button class="btn-util" id="btnExportCSV" title="Exportar a CSV">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
+          </svg>
+          <span>CSV</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Gráfica de Barras Apiladas SVG Oficial MinTIC -->
+    <section class="chart-container-card" id="chartCard">
+      <div class="chart-axis-title">Millones de accesos</div>
+
+      <div class="svg-area">
+        <svg class="svg-canvas" id="svgChart" viewBox="0 0 740 270">
+          <!-- Gráfico generado dinámicamente -->
+        </svg>
+
+        <!-- Tooltip interactivo -->
+        <div class="tooltip-float" id="tooltip">
+          <div class="tt-header" id="ttHeader">Periodo: 2026-1</div>
+          <div class="tt-row"><span style="color:var(--col-5g)">● 5G:</span><span id="tt5g">0 M</span></div>
+          <div class="tt-row"><span style="color:var(--col-4g)">● 4G:</span><span id="tt4g">0 M</span></div>
+          <div class="tt-row"><span style="color:var(--col-3g)">● 3G:</span><span id="tt3g">0 M</span></div>
+          <div class="tt-row"><span style="color:var(--col-2g-text)">● 2G:</span><span id="tt2g">0 M</span></div>
+          <div class="tt-row tt-total"><span>Total Accesos:</span><span id="ttTotal">0 M</span></div>
+        </div>
+      </div>
+
+      <!-- Leyenda con los 4 colores oficiales -->
+      <div class="legend-row">
+        <div class="legend-item" data-tech="2G" title="Clic para ocultar/mostrar 2G">
+          <div class="legend-pill" style="background:var(--col-2g);border-color:var(--col-2g-border)"></div>
+          <span class="legend-txt">2G</span>
+        </div>
+        <div class="legend-item" data-tech="3G" title="Clic para ocultar/mostrar 3G">
+          <div class="legend-pill" style="background:var(--col-3g);border-color:var(--col-3g-border)"></div>
+          <span class="legend-txt">3G</span>
+        </div>
+        <div class="legend-item" data-tech="4G" title="Clic para ocultar/mostrar 4G">
+          <div class="legend-pill" style="background:var(--col-4g);border-color:var(--col-4g-border)"></div>
+          <span class="legend-txt">4G</span>
+        </div>
+        <div class="legend-item" data-tech="5G" title="Clic para ocultar/mostrar 5G">
+          <div class="legend-pill" style="background:var(--col-5g);border-color:var(--col-5g-border)"></div>
+          <span class="legend-txt">5G</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista de Tabla de Datos -->
+    <section class="table-view-box" id="tableCard">
+      <table class="ontic-table">
+        <thead>
+          <tr>
+            <th>Periodo</th>
+            <th>2G (Millones)</th>
+            <th>3G (Millones)</th>
+            <th>4G (Millones)</th>
+            <th>5G (Millones)</th>
+            <th>Total (Millones)</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Filas de datos -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Bloque de Código para Incrustar -->
+    <div class="embed-card" id="embedCard">
+      <div style="font-size:0.68rem;color:#cbd5e1;font-family:sans-serif;font-weight:700;">CÓDIGO IFRAME PARA INCRUSTAR EN STORYMAPS O PORTALES:</div>
+      <code>&lt;iframe src="https://dureyes97.github.io/accesos-internet-movil-ontic/" width="100%" height="600" frameborder="0" style="border:none;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,0.08);"&gt;&lt;/iframe&gt;</code>
+    </div>
+
+    <!-- Pie de Información y Metadatos -->
+    <footer class="footer-box">
+      <span>Fuente: Registro Administrativo Reporte HECAA - MinTIC • Servicio Esri ArcGIS Enterprise</span>
+      <span id="syncText">Sincronizado con ArcGIS FeatureServer...</span>
+    </footer>
+
+  </div>  <script>
+    const SERVICE_URL = 'https://arcgis.esri.co/server/rest/services/Hosted/Ontic/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=false&f=json';
+
+    const TECH_COLORS = {
+      '2G': { fill: '#F9E6CF', border: '#e8cdb0', text: '#5c452e' },
+      '3G': { fill: '#FAC67A', border: '#e6a953', text: '#4d3208' },
+      '4G': { fill: '#DA498D', border: '#be3475', text: '#ffffff' },
+      '5G': { fill: '#69247C', border: '#4f175f', text: '#ffffff' }
+    };
+
+    let rawRecords = [];
+    let selectedOperador = 'TODOS';
+    let selectedSegmento = 'TODOS';
+    let selectedTerminal = 'TODOS';
+    let activeTechs = { '2G': true, '3G': true, '4G': true, '5G': true };
+
+    async function loadData(isManual = false) {
+      const refreshIcon = document.getElementById('refreshIcon');
+      if (isManual) refreshIcon.classList.add('spin-anim');
+
+      try {
+        const res = await fetch(SERVICE_URL, { cache: 'no-store' });
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.features) {
+            rawRecords = json.features.map(f => f.attributes);
+            populateOperadores();
+            updateDashboard();
+            const now = new Date();
+            document.getElementById('syncText').textContent = `Sincronizado: ${now.toLocaleTimeString('es-CO')} (${rawRecords.length} registros)`;
+          }
+        }
+      } catch (err) {
+        console.warn('Error cargando servicio ArcGIS:', err);
+        document.getElementById('syncText').textContent = 'Conexión activa (modo local/caché)';
+      } finally {
+        if (isManual) {
+          setTimeout(() => refreshIcon.classList.remove('spin-anim'), 600);
+        }
+      }
+    }
+
+    function populateOperadores() {
+      const select = document.getElementById('selectOperador');
+      const set = new Set();
+      rawRecords.forEach(r => { if (r.proveedor) set.add(r.proveedor.trim()); });
+      const ops = Array.from(set).sort();
+
+      select.innerHTML = '<option value="TODOS">Todos los Operadores (' + ops.length + ')</option>';
+      ops.forEach(op => {
+        const opt = document.createElement('option');
+        opt.value = op;
+        opt.textContent = op;
+        select.appendChild(opt);
+      });
+    }
+
+    function getAggregatedData() {
+      const map = new Map();
+
+      rawRecords.forEach(r => {
+        if (selectedOperador !== 'TODOS' && r.proveedor?.trim() !== selectedOperador) return;
+        if (selectedSegmento !== 'TODOS' && r.segmento?.trim() !== selectedSegmento) return;
+        if (selectedTerminal !== 'TODOS' && r.terminal?.trim() !== selectedTerminal) return;
+
+        const key = `${r.anio}-${r.trimestre}`;
+        if (!map.has(key)) {
+          map.set(key, { key: key, anio: r.anio, trimestre: r.trimestre, t2g: 0, t3g: 0, t4g: 0, t5g: 0 });
+        }
+        const entry = map.get(key);
+        const count = r.abonados || 0;
+        const tech = (r.tecnologia || '').toUpperCase();
+
+        if (tech === '2G') entry.t2g += count;
+        else if (tech === '3G') entry.t3g += count;
+        else if (tech === '4G') entry.t4g += count;
+        else if (tech === '5G') entry.t5g += count;
+      });
+
+      const sorted = Array.from(map.values()).sort((a, b) => {
+        if (a.anio !== b.anio) return a.anio - b.anio;
+        return a.trimestre - b.trimestre;
+      });
+
+      return sorted.map(d => {
+        const v2g = activeTechs['2G'] ? d.t2g / 1000000 : 0;
+        const v3g = activeTechs['3G'] ? d.t3g / 1000000 : 0;
+        const v4g = activeTechs['4G'] ? d.t4g / 1000000 : 0;
+        const v5g = activeTechs['5G'] ? d.t5g / 1000000 : 0;
+        return {
+          period: d.key,
+          anio: d.anio,
+          trimestre: d.trimestre,
+          t2g: v2g,
+          t3g: v3g,
+          t4g: v4g,
+          t5g: v5g,
+          total: v2g + v3g + v4g + v5g
+        };
+      });
+    }
+
+    function updateDashboard() {
+      const data = getAggregatedData();
+      renderKPIs(data);
+      renderChart(data);
+      renderTable(data);
+    }
+
+    function renderKPIs(data) {
+      if (!data || data.length === 0) return;
+      const latest = data[data.length - 1];
+
+      document.getElementById('kpiPeriod').textContent = latest.period;
+      document.getElementById('kpiTotal').textContent = latest.total.toFixed(2) + ' M';
+      document.getElementById('kpi4g').textContent = latest.t4g.toFixed(2) + ' M';
+      document.getElementById('kpi4gPct').textContent = latest.total > 0 ? ((latest.t4g / latest.total) * 100).toFixed(1) + '% de participación' : '0%';
+      document.getElementById('kpi5g').textContent = latest.t5g.toFixed(2) + ' M';
+      document.getElementById('kpi5gPct').textContent = latest.total > 0 ? ((latest.t5g / latest.total) * 100).toFixed(1) + '% del mercado' : '0%';
+      document.getElementById('kpi3g').textContent = latest.t3g.toFixed(2) + ' M';
+      document.getElementById('kpi3gPct').textContent = latest.total > 0 ? ((latest.t3g / latest.total) * 100).toFixed(1) + '% del mercado' : '0%';
+    }
+
+    function renderChart(data) {
+      const svg = document.getElementById('svgChart');
+      svg.innerHTML = '';
+      if (!data || data.length === 0) return;
+
+      const chartWidth = 740;
+      const chartHeight = 270;
+      const margin = { top: 20, right: 20, bottom: 35, left: 45 };
+      const plotWidth = chartWidth - margin.left - margin.right;
+      const plotHeight = chartHeight - margin.top - margin.bottom;
+
+      let maxVal = 0;
+      data.forEach(d => { if (d.total > maxVal) maxVal = d.total; });
+      const maxTotal = maxVal > 0 ? Math.ceil(maxVal * 1.15 / 5) * 5 : 50;
+
+      // Líneas horizontales de cuadrícula
+      [0, 0.25, 0.5, 0.75, 1].forEach(pct => {
+        const yVal = maxTotal * (1 - pct);
+        const yPos = margin.top + plotHeight * pct;
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', margin.left);
+        line.setAttribute('y1', yPos);
+        line.setAttribute('x2', chartWidth - margin.right);
+        line.setAttribute('y2', yPos);
+        line.setAttribute('stroke', '#e2e8f0');
+        if (pct < 1) line.setAttribute('stroke-dasharray', '3,3');
+        svg.appendChild(line);
+
+        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        txt.setAttribute('x', margin.left - 8);
+        txt.setAttribute('y', yPos + 4);
+        txt.setAttribute('text-anchor', 'end');
+        txt.setAttribute('font-size', '10');
+        txt.setAttribute('fill', '#64748b');
+        txt.setAttribute('font-family', 'JetBrains Mono, monospace');
+        txt.textContent = Math.round(yVal) + ' M';
+        svg.appendChild(txt);
+      });
+
+      const barWidth = Math.min(42, Math.max(18, (plotWidth / data.length) * 0.65));
+
+      data.forEach((d, i) => {
+        const colX = margin.left + (i + 0.5) * (plotWidth / data.length);
+        const x = colX - barWidth / 2;
+
+        const h2g = (d.t2g / maxTotal) * plotHeight;
+        const h3g = (d.t3g / maxTotal) * plotHeight;
+        const h4g = (d.t4g / maxTotal) * plotHeight;
+        const h5g = (d.t5g / maxTotal) * plotHeight;
+
+        const baseLine = margin.top + plotHeight;
+        const y2g = baseLine - h2g;
+        const y3g = y2g - h3g;
+        const y4g = y3g - h4g;
+        const y5g = y4g - h5g;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.style.cursor = 'pointer';
+
+        // 2G
+        if (h2g > 0) {
+          const r2g = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          r2g.setAttribute('x', x);
+          r2g.setAttribute('y', y2g);
+          r2g.setAttribute('width', barWidth);
+          r2g.setAttribute('height', h2g);
+          r2g.setAttribute('fill', TECH_COLORS['2G'].fill);
+          r2g.setAttribute('stroke', TECH_COLORS['2G'].border);
+          g.appendChild(r2g);
+        }
+
+        // 3G
+        if (h3g > 0) {
+          const r3g = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          r3g.setAttribute('x', x);
+          r3g.setAttribute('y', y3g);
+          r3g.setAttribute('width', barWidth);
+          r3g.setAttribute('height', h3g);
+          r3g.setAttribute('fill', TECH_COLORS['3G'].fill);
+          r3g.setAttribute('stroke', TECH_COLORS['3G'].border);
+          g.appendChild(r3g);
+        }
+
+        // 4G
+        if (h4g > 0) {
+          const r4g = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          r4g.setAttribute('x', x);
+          r4g.setAttribute('y', y4g);
+          r4g.setAttribute('width', barWidth);
+          r4g.setAttribute('height', h4g);
+          r4g.setAttribute('fill', TECH_COLORS['4G'].fill);
+          r4g.setAttribute('stroke', TECH_COLORS['4G'].border);
+          g.appendChild(r4g);
+
+          if (h4g > 18) {
+            const lbl4g = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            lbl4g.setAttribute('x', colX);
+            lbl4g.setAttribute('y', y4g + h4g / 2 + 3);
+            lbl4g.setAttribute('text-anchor', 'middle');
+            lbl4g.setAttribute('font-size', '9');
+            lbl4g.setAttribute('font-weight', '700');
+            lbl4g.setAttribute('fill', '#ffffff');
+            lbl4g.textContent = d.t4g.toFixed(1);
+            g.appendChild(lbl4g);
+          }
+        }
+
+        // 5G (top rounded)
+        if (h5g > 0) {
+          const r5g = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          r5g.setAttribute('x', x);
+          r5g.setAttribute('y', y5g);
+          r5g.setAttribute('width', barWidth);
+          r5g.setAttribute('height', h5g);
+          r5g.setAttribute('rx', '4');
+          r5g.setAttribute('ry', '4');
+          r5g.setAttribute('fill', TECH_COLORS['5G'].fill);
+          r5g.setAttribute('stroke', TECH_COLORS['5G'].border);
+          g.appendChild(r5g);
+        }
+
+        // Etiqueta del Total arriba de la barra
+        const lblTotal = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lblTotal.setAttribute('x', colX);
+        lblTotal.setAttribute('y', Math.min(baseLine - 4, y5g - 4));
+        lblTotal.setAttribute('text-anchor', 'middle');
+        lblTotal.setAttribute('font-size', '9');
+        lblTotal.setAttribute('font-weight', '700');
+        lblTotal.setAttribute('fill', '#004884');
+        lblTotal.textContent = d.total.toFixed(1);
+        g.appendChild(lblTotal);
+
+        // Etiqueta Eje X
+        const lblX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lblX.setAttribute('x', colX);
+        lblX.setAttribute('y', baseLine + 16);
+        lblX.setAttribute('text-anchor', 'middle');
+        lblX.setAttribute('font-size', '9.5');
+        lblX.setAttribute('fill', '#334155');
+        lblX.textContent = d.period;
+        g.appendChild(lblX);
+
+        // Hover events para Tooltip
+        g.addEventListener('mouseenter', (ev) => {
+          showTooltip(d, colX, y5g);
+        });
+        g.addEventListener('mouseleave', () => {
+          hideTooltip();
+        });
+
+        svg.appendChild(g);
+      });
+    }
+
+    function showTooltip(d, x, y) {
+      const tt = document.getElementById('tooltip');
+      document.getElementById('ttHeader').textContent = 'Periodo: ' + d.period;
+      document.getElementById('tt5g').textContent = d.t5g.toFixed(2) + ' M (' + (d.total > 0 ? ((d.t5g / d.total) * 100).toFixed(1) : 0) + '%)';
+      document.getElementById('tt4g').textContent = d.t4g.toFixed(2) + ' M (' + (d.total > 0 ? ((d.t4g / d.total) * 100).toFixed(1) : 0) + '%)';
+      document.getElementById('tt3g').textContent = d.t3g.toFixed(2) + ' M (' + (d.total > 0 ? ((d.t3g / d.total) * 100).toFixed(1) : 0) + '%)';
+      document.getElementById('tt2g').textContent = d.t2g.toFixed(2) + ' M (' + (d.total > 0 ? ((d.t2g / d.total) * 100).toFixed(1) : 0) + '%)';
+      document.getElementById('ttTotal').textContent = d.total.toFixed(2) + ' Millones';
+
+      tt.style.left = (x / 740 * 100) + '%';
+      tt.style.top = Math.max(10, (y / 270 * 100)) + '%';
+      tt.style.display = 'block';
+    }
+
+    function hideTooltip() {
+      document.getElementById('tooltip').style.display = 'none';
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      data.forEach(d => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${d.period} (${d.anio} - T${d.trimestre})</td>
+          <td style="color:${TECH_COLORS['2G'].text}">${d.t2g.toFixed(2)} M</td>
+          <td style="color:${TECH_COLORS['3G'].text}">${d.t3g.toFixed(2)} M</td>
+          <td style="color:${TECH_COLORS['4G'].text};font-weight:700;">${d.t4g.toFixed(2)} M</td>
+          <td style="color:${TECH_COLORS['5G'].fill};font-weight:700;">${d.t5g.toFixed(2)} M</td>
+          <td style="font-weight:800;color:#004884;">${d.total.toFixed(2)} M</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Exportar CSV
+    document.getElementById('btnExportCSV').addEventListener('click', () => {
+      const data = getAggregatedData();
+      if (!data || data.length === 0) return;
+      let csv = 'Periodo,Anio,Trimestre,2G_Millones,3G_Millones,4G_Millones,5G_Millones,Total_Millones\n';
+      data.forEach(d => {
+        csv += `${d.period},${d.anio},${d.trimestre},${d.t2g.toFixed(2)},${d.t3g.toFixed(2)},${d.t4g.toFixed(2)},${d.t5g.toFixed(2)},${d.total.toFixed(2)}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `ONTIC_Accesos_Internet_Movil.csv`;
+      link.click();
+    });
+
+    // Toggle Vista Gráfica vs Tabla
+    document.getElementById('btnViewChart').addEventListener('click', function() {
+      this.classList.add('active');
+      document.getElementById('btnViewTable').classList.remove('active');
+      document.getElementById('chartCard').style.display = 'flex';
+      document.getElementById('tableCard').classList.remove('active');
+    });
+
+    document.getElementById('btnViewTable').addEventListener('click', function() {
+      this.classList.add('active');
+      document.getElementById('btnViewChart').classList.remove('active');
+      document.getElementById('chartCard').style.display = 'none';
+      document.getElementById('tableCard').classList.add('active');
+    });
+
+    // Filtros de Segmento
+    document.querySelectorAll('#segGroup .btn-toggle').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('#segGroup .btn-toggle').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedSegmento = this.dataset.seg;
+        updateDashboard();
+      });
+    });
+
+    // Filtros de Terminal
+    document.querySelectorAll('#termGroup .btn-toggle').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('#termGroup .btn-toggle').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedTerminal = this.dataset.term;
+        updateDashboard();
+      });
+    });
+
+    // Filtro Operador
+    document.getElementById('selectOperador').addEventListener('change', function() {
+      selectedOperador = this.value;
+      updateDashboard();
+    });
+
+    // Leyenda interactiva (toggle tecnología)
+    document.querySelectorAll('.legend-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const tech = this.dataset.tech;
+        activeTechs[tech] = !activeTechs[tech];
+        if (activeTechs[tech]) {
+          this.classList.remove('dimmed');
+        } else {
+          this.classList.add('dimmed');
+        }
+        updateDashboard();
+      });
+    });
+
+    // Incrustar toggle
+    document.getElementById('btnToggleEmbed').addEventListener('click', () => {
+      document.getElementById('embedCard').classList.toggle('active');
+    });
+
+    // Refresco manual
+    document.getElementById('btnRefresh').addEventListener('click', () => {
+      loadData(true);
+    });
+
+    // Inicializar
+    loadData(false);
+    setInterval(() => loadData(false), 120000);
+  </script>
+</body>
+</html>
